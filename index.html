@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChatKit Wrapper</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.platform.openai.com/deployments/chatkit/chatkit.js" async></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              gemini: {
+                bg: '#0a0a0a',        // background1
+                sidebar: '#0a0a0a',   // sidebar background (updated to #0a0a0a)
+                surface: '#2a2a2a',   // container background (cards, input)
+                hover: '#3f3f3f',     // lighter than surface for interaction
+                accent: '#A8C7FA',    // Accent
+                text: '#FFFFFF',      // text header
+                textSec: 'rgba(255, 255, 255, 0.7)', // text second (70% opacity)
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      body {
+        background-color: #0a0a0a;
+        color: #FFFFFF;
+      }
+      /* Custom scrollbar for Gemini feel */
+      ::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #0a0a0a; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #2a2a2a; 
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #3f3f3f; 
+      }
+
+      /* Specific scrollbar for Input Area - High contrast and aesthetic */
+      .input-scrollbar::-webkit-scrollbar {
+        width: 6px;
+      }
+      .input-scrollbar::-webkit-scrollbar-track {
+        background: transparent;
+        margin: 8px 0;
+      }
+      .input-scrollbar::-webkit-scrollbar-thumb {
+        background: #555555;
+        border-radius: 3px;
+      }
+      .input-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #777777;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.2",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.2/",
+    "react/": "https://esm.sh/react@^19.2.2/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.560.0",
+    "openai": "https://esm.sh/openai@4.73.0"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>
