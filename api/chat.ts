@@ -17,16 +17,18 @@ export default async function handler(req: Request) {
   try {
     const { messages } = await req.json();
     
-    // Retrieve the Workflow ID from env.
-    // The user explicitly wants to use the Workflow ID (starting with 'wf_') 
-    // to connect to their multi-agent setup.
-    // Fallback to 'gpt-4o-mini' if no workflow ID is provided.
-    const model = process.env.NEXT_PUBLIC_CHATKIT_WORKFLOW_ID || 'gpt-4o-mini';
+    // Pobieramy ID Workflow z enviroment variables.
+    // Zgodnie z Twoim wymaganiem, nie ustawiamy żadnego fallbacku (np. gpt-4o).
+    // Agent ma działać wyłącznie na podstawie ID Workflow.
+    const model = process.env.NEXT_PUBLIC_CHATKIT_WORKFLOW_ID;
 
-    console.log(`[API] Using model/workflow: ${model}`);
+    if (!model) {
+      throw new Error("Brak zdefiniowanego Workflow ID (NEXT_PUBLIC_CHATKIT_WORKFLOW_ID)");
+    }
 
-    // Create the chat completion stream
-    // We pass the 'wf_' ID directly as the model parameter.
+    // Nie wstrzykujemy tutaj żadnego System Prompt.
+    // Cała logika, instrukcje i zachowanie agenta są zdefiniowane w samym Workflow po stronie OpenAI.
+    
     const response = await openai.chat.completions.create({
       model: model,
       messages: messages.map((m: any) => ({
@@ -36,7 +38,7 @@ export default async function handler(req: Request) {
       stream: true,
     });
 
-    // Convert the OpenAI stream to a readable stream for the frontend
+    // Konwersja strumienia OpenAI na ReadableStream dla frontendu
     const stream = response.toReadableStream();
 
     return new Response(stream, {
@@ -49,7 +51,9 @@ export default async function handler(req: Request) {
 
   } catch (error: any) {
     console.error("API Error:", error);
-    return new Response(JSON.stringify({ error: error.message || 'Internal Server Error' }), { 
+    return new Response(JSON.stringify({ 
+      error: error.message || 'Internal Server Error' 
+    }), { 
       status: 500,
       headers: { 'Content-Type': 'application/json' }
     });
